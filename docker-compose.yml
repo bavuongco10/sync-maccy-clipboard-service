@@ -45,11 +45,12 @@ services:
             - RETRY_WAIT_SECONDS=${RETRY_WAIT_SECONDS:-1800}
             - MAX_FAIL_STREAK=${MAX_FAIL_STREAK:-48}
             - HEALTH_MAX_LAG_SECONDS=${HEALTH_MAX_LAG_SECONDS:-86400}
+            - HEALTH_STARTUP_GRACE_SECONDS=${HEALTH_STARTUP_GRACE_SECONDS:-3600}
         healthcheck:
             test:
                 [
                     "CMD-SHELL",
-                    "test -f /tmp/last_success_epoch && now=$$(date +%s) && last=$$(cat /tmp/last_success_epoch) && [ $$((now-last)) -lt $${HEALTH_MAX_LAG_SECONDS:-86400} ]",
+                    "if test -f /tmp/last_success_epoch; then now=$$(date +%s); last=$$(cat /tmp/last_success_epoch); [ $$((now-last)) -lt $${HEALTH_MAX_LAG_SECONDS:-86400} ]; else test -f /tmp/start_epoch && now=$$(date +%s) && start=$$(cat /tmp/start_epoch) && [ $$((now-start)) -lt $${HEALTH_STARTUP_GRACE_SECONDS:-3600} ]; fi",
                 ]
             interval: 60s
             timeout: 5s

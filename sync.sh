@@ -7,9 +7,8 @@ MAX_FAIL_STREAK=${MAX_FAIL_STREAK:-48}
 FAIL_STREAK=0
 LAST_SYNC=0
 
-# Initialize health heartbeat at startup so the container doesn't become
-# unhealthy before the first scheduled sync attempt.
-date +%s > /tmp/last_success_epoch
+# Track process start separately from successful sync heartbeat.
+date +%s > /tmp/start_epoch
 
 while true; do
   NOW=$(date +%s)
