@@ -3,9 +3,18 @@ services:
         image: rclone/rclone:1.73.3
         container_name: maccy_sync_worker
         restart: unless-stopped
+        init: true
+        security_opt:
+            - no-new-privileges:true
+        cap_drop:
+            - ALL
+        read_only: true
+        tmpfs:
+            - /tmp
+            - /root/.cache
         volumes:
             # Mount your rclone config
-            - "${RCLONE_CONFIG_DIR}:/config/rclone"
+            - "${RCLONE_CONFIG_DIR}:/config/rclone:ro"
             # Mount the Maccy folder (sandboxed app path)
             - "${MACCY_DATA_DIR}:/data:ro"
             - "./sync.sh:/sync.sh:ro"

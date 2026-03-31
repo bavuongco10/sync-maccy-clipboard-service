@@ -1,4 +1,5 @@
 #!/bin/sh
+set -eu
 
 LAST_SYNC=0
 RETRY_WAIT=300  # retry after 5 min on failure

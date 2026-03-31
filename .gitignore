@@ -3,3 +3,6 @@
 
 # Container/runtime logs
 logs/*.log
+
+# Local assistant settings
+.claude/
