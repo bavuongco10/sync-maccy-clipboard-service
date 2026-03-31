@@ -17,7 +17,7 @@ while true; do
     LOG_FILE="/logs/sync_$(date +%Y-%m-%d).log"
     echo "$(date): Checking for Storage.sqlite..." | tee -a "$LOG_FILE"
     if [ -f /data/Storage.sqlite ]; then
-      if rclone copy /data/Storage.sqlite gdrive:MaccyBackup --config /config/rclone/rclone.conf --ask-password=false; then
+      if rclone copy /data gdrive:MaccyBackup --include "Storage.sqlite*" --config /config/rclone/rclone.conf --ask-password=false; then
         date +%s > /tmp/last_success_epoch
         FAIL_STREAK=0
         echo "$(date): Sync successful." | tee -a "$LOG_FILE"
